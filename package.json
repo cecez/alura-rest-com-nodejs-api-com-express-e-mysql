@@ -1,22 +1,25 @@
 {
-    "name": "cezar-alura-rest-com-nodejs-api-com-express-e-mysql",
-    "version": "1.0.0",
-    "description": "Projeto para acompanhar curso Alura sobre Rest com NodeJS: API com Express e MySQL",
-    "main": "index.js",
-    "directories": {
-      "lib": "lib"
-    },
-    "scripts": {
-      "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "repository": {
-      "type": "git",
-      "url": "git+https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql.git"
-    },
-    "author": "Cezar Rosa",
-    "license": "ISC",
-    "bugs": {
-      "url": "https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql/issues"
-    },
-    "homepage": "https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql#readme"
+  "name": "cezar-alura-rest-com-nodejs-api-com-express-e-mysql",
+  "version": "1.0.0",
+  "description": "Projeto para acompanhar curso Alura sobre Rest com NodeJS: API com Express e MySQL",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql.git"
+  },
+  "author": "Cezar Rosa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql/issues"
+  },
+  "homepage": "https://github.com/cecez/alura-rest-com-nodejs-api-com-express-e-mysql#readme",
+  "dependencies": {
+    "express": "^4.17.1"
   }
+}
