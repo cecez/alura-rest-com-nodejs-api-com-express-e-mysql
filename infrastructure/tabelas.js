@@ -14,14 +14,18 @@ class Tabelas {
             servico varchar(100) not null,
             status varchar(100) not null,
             observacoes text,
+            data datetime not null,
+            data_de_criacao datetime not null,
             primary key (id)
         )`;
 
-        this.conexao.query(sql, (erro) => {
+        this.conexao.query(sql, (erro, retorno) => {
             if (erro) {
                 console.log(erro)
             } else {
-                console.log('Tabela de atendimentos criada com sucesso')
+                if (retorno.affectedRows > 0) {
+                    console.log('Tabela de atendimentos criada com sucesso')
+                }                
             }
         })
     }
