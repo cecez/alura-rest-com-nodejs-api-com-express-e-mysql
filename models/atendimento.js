@@ -1,20 +1,39 @@
-const moment = require('moment');
-const conexao = require("../infrastructure/connection");
+const moment = require('moment')
+const conexao = require("../infrastructure/connection")
 
 class Atendimento {
 
-    adiciona(atendimento) {
-        const data_de_criacao = moment().format('YYYY-MM-DD HH:mm:ss');
-        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss');
-        const atendimentoDatado = {...atendimento, data, data_de_criacao};
+    adiciona(atendimento, resposta) {
+        const data_de_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
+        const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
 
-        const sql = 'INSERT INTO atendimentos SET ?';
+        // validações (data maior que hoje, cliente com 5+ caracteres)
+        const dataEstaValida = moment(data).isSameOrAfter(data_de_criacao)
+        const clienteEstaValido = atendimento.cliente.length >=5
+
+        const validacoes = [
+            { campo: 'data', valido: dataEstaValida, mensagem: 'Data deve ser maior ou igual a data atual' },
+            { campo: 'cliente', valido: clienteEstaValido, mensagem: 'Cliente deve ter pelo menos cinco caracteres' }
+        ]
+
+        const erros = validacoes.filter(campo => !campo.valido)
+        const existemErros = erros.length
+
+        if (existemErros) {
+            resposta.status(400).json(erros)
+            return
+        }
+
+        // dados validos, realiza inserção
+        const atendimentoDatado = {...atendimento, data, data_de_criacao}
+
+        const sql = 'INSERT INTO atendimentos SET ?'
 
         conexao.query(sql, atendimentoDatado, (erro, resultados) => {
             if (erro) {
-                console.log(erro)
+                resposta.status(400).json(erro)
             } else {
-                console.log(resultados)
+                resposta.status(201).json(resultados)
             }
         })
     }

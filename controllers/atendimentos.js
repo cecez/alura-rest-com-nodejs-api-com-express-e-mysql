@@ -9,11 +9,7 @@ module.exports = (app) => {
 
     app.post('/atendimentos', (request, response) => {
         const atendimento = request.body
-
-        console.log('POST /atendimentos acessado, dados da requisição:') 
-        console.log(request.body)        
-        response.send('Oi, aqui é do servidor e você está POSTando na rota de atendimentos, grato.') 
         
-        Atendimento.adiciona(atendimento)
+        Atendimento.adiciona(atendimento, response)
     })
 }
