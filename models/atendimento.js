@@ -3,6 +3,10 @@ const conexao = require("../infrastructure/connection")
 
 class Atendimento {
 
+    retornoJson(resposta, status, retorno) {
+        resposta.status(status).json(retorno)
+    } 
+
     adiciona(atendimento, resposta) {
         const data_de_criacao = moment().format('YYYY-MM-DD HH:mm:ss')
         const data = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
@@ -20,7 +24,7 @@ class Atendimento {
         const existemErros = erros.length
 
         if (existemErros) {
-            resposta.status(400).json(erros)
+            this.retornoJson(resposta, 400, erros)
             return
         }
 
@@ -31,11 +35,29 @@ class Atendimento {
 
         conexao.query(sql, atendimentoDatado, (erro, resultados) => {
             if (erro) {
-                resposta.status(400).json(erro)
+                this.retornoJson(resposta, 400, erro)
             } else {
-                resposta.status(201).json(resultados)
+                this.retornoJson(resposta, 201, atendimentoDatado)
             }
         })
+    }
+
+    altera(id, valores, resposta) {
+
+        if (valores.data) {
+            valores.data = moment(valores.data, 'DD/MM/YYYY').format('YYYY-MM-DD HH:mm:ss')
+        }
+
+        const sql = 'UPDATE atendimentos SET ? WHERE id = ?'
+
+        conexao.query(sql, [valores, id], (erro, resultados) => {
+            if (erro) {
+                this.retornoJson(resposta, 400, erro)
+            } else {
+                this.retornoJson(resposta, 200, {...valores, id})
+            }
+        })
+
     }
 
     buscaPorId(id, resposta) {
@@ -43,10 +65,21 @@ class Atendimento {
 
         conexao.query(sql, id, (erro, resultado) => {
             if (erro) {
-                resposta.status(400).json(erro)
+                this.retornoJson(resposta, 400, erro)
             } else {
-                const atendimento = resultado[0]
-                resposta.status(200).json(atendimento)
+                this.retornoJson(resposta, 200, resultado[0])
+            }
+        })
+    }
+
+    deleta(id, resposta) {
+        const sql = 'DELETE FROM atendimentos WHERE id = ?'
+
+        conexao.query(sql, id, (erro, resultados) => {
+            if (erro) {
+                this.retornoJson(resposta, 400, erro)
+            } else {
+                this.retornoJson(resposta, 200, {id})
             }
         })
     }
@@ -56,9 +89,9 @@ class Atendimento {
 
         conexao.query(sql, (erro, resultados) => {
             if (erro) {
-                resposta.status(400).json(erro)
+                this.retornoJson(resposta, 400, erro)
             } else {
-                resposta.status(200).json(resultados)
+                this.retornoJson(resposta, 200, resultados)
             }
         })
     }
